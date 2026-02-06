@@ -13,21 +13,22 @@ function isNotValidInteger (value) {
   return typeof value !== 'number' || value < 0 || value % 1 !== 0
 }
 
-class CreditPackageController {
-  static async getAll (req, res, next) {
-    try {
-      const creditPackage = await dataSource.getRepository('CreditPackage').find({
-        select: ['id', 'name', 'credit_amount', 'price']
-      })
-      res.status(200).json({
-        status: 'success',
-        data: creditPackage
-      })
-    } catch (error) {
-      logger.error(error)
-      next(error)
-    }
+static async getAll (req, res, next) {
+  try {
+    const creditPackage = await dataSource.getRepository('CreditPackage').find({
+      select: ['id', 'name', 'credit_amount', 'price']
+    })
+    res.status(200).json({
+      status: 'success',
+      total: creditPackage.length,   // 新增 total
+      data: creditPackage
+    })
+  } catch (error) {
+    logger.error(error)
+    next(error)
   }
+}
+
 
   static async postCreditPackage (req, res, next) {
     try {
